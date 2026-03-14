@@ -1,0 +1,82 @@
+body{
+    font-family: Arial;
+    background:#ddd;
+    margin:0;
+}
+
+/* Header */
+
+.header{
+    text-align:center;
+    padding:30px;
+    position:relative;
+}
+
+.auth{
+    position:absolute;
+    right:30px;
+    top:20px;
+}
+
+button{
+    padding:8px 16px;
+    border:none;
+    border-radius:6px;
+}
+
+.signup{
+    background:#79d157;
+}
+
+.search{
+    width:600px;
+    padding:12px;
+    border-radius:25px;
+    border:2px solid black;
+}
+
+
+/* Grid phim */
+
+.movie-container{
+    width:80%;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:40px;
+}
+
+
+/* Card phim */
+
+.movie-card{
+    background:#bfbfbf;
+    padding:20px;
+    text-align:center;
+    border-radius:6px;
+
+    height:260px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+
+/* ảnh phim */
+
+.movie-img{
+    background:#79d157;
+    height:160px;
+    border-radius:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
