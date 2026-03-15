@@ -18,15 +18,19 @@ def signin():
 def signup():
     return render_template("sign_up.html")
 
+@router.route("/user_index/<user>")
+def userindex(user):
+    return render_template("user_index.html",username=user)
+
 @router.route("/user", methods = ['POST'])
 def user():
     email = request.form.get('email')
     password = request.form.get('password')
     conn = get_db()
     cursor = conn.cursor()
-    user = cursor.execute("SELECT * FROM users WHERE email=? AND password=?",(email,password)).fetchall()
-    if len(user) > 0:
-        return "Welcome"
+    user = cursor.execute("SELECT * FROM users WHERE email=? AND password=?",(email,password)).fetchone()
+    if user:
+        return redirect(url_for('router.userindex', user=user["username"]))
     else:
         return redirect(url_for('router.signin'))
 
@@ -46,4 +50,4 @@ def adduser():
         cursor.execute("INSERT INTO users(username,email,password)values(?,?,?)",(username,email,password))
         conn.commit()
         conn.close()
-        return "Finish Sign up"
+        return redirect(url_for('router.signin'))

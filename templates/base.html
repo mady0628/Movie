@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang phim</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="header">
+    {% block content %}
+    {% endblock %}
+    <input class="search" type="text" placeholder="Chỗ để nhập yêu cầu">
+</header>
+
+
+<section class="movie-container">
+
+    <div class="movie-card">
+        <div class="movie-img">Ảnh phim</div>
+        <p>Tên Phim:</p>
+    </div>
+
+    <div class="movie-card">
+        <div class="movie-img">Ảnh phim</div>
+        <p>Tên Phim:</p>
+    </div>
+
+    <div class="movie-card">
+        <div class="movie-img">Ảnh phim</div>
+        <p>Tên Phim:</p>
+    </div>
+
+    <div class="movie-card">
+        <div class="movie-img">Ảnh phim</div>
+        <p>Tên Phim:</p>
+    </div>
+
+</section>
+
+</body>
+</html>
