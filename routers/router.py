@@ -1,12 +1,20 @@
 from flask import Blueprint, render_template,request,redirect,url_for
 from database import get_db
+import requests
+import os
+
+MOVIES_API_KEY = os.getenv("MOVIES_API_KEY")
 
 router = Blueprint("router", __name__)
 
 
 @router.route("/")
 def home():
-    return render_template("index.html")
+    url = f"https://api.themoviedb.org/3/movie/popular?api_key={MOVIES_API_KEY}"
+    res = requests.get(url)
+    data = res.json()
+    movies = data["results"]
+    return render_template("index.html", movies=movies)
 
 
 @router.route("/signin")
@@ -20,7 +28,11 @@ def signup():
 
 @router.route("/user_index/<user>")
 def userindex(user):
-    return render_template("user_index.html",username=user)
+    url = f"https://api.themoviedb.org/3/movie/popular?api_key={MOVIES_API_KEY}"
+    res = requests.get(url)
+    data = res.json()
+    movies = data["results"]
+    return render_template("user_index.html", username=user, movies=movies)
 
 @router.route("/user", methods = ['POST'])
 def user():

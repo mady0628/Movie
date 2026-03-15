@@ -10,31 +10,24 @@
 <header class="header">
     {% block content %}
     {% endblock %}
-    <input class="search" type="text" placeholder="Chỗ để nhập yêu cầu">
+    <form>
+        <input class="search" type="text" name="user_request" placeholder="Request" required>
+        <button type="submit">Ask</button>
+    </form>
 </header>
 
 
 <section class="movie-container">
 
-    <div class="movie-card">
-        <div class="movie-img">Ảnh phim</div>
-        <p>Tên Phim:</p>
-    </div>
+{% for movie in movies %}
 
-    <div class="movie-card">
-        <div class="movie-img">Ảnh phim</div>
-        <p>Tên Phim:</p>
-    </div>
+<div class="movie-card">
+<img class="movie-img"
+src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}">
+<p class="movie-title">{{ movie.title }}</p>
+</div>
 
-    <div class="movie-card">
-        <div class="movie-img">Ảnh phim</div>
-        <p>Tên Phim:</p>
-    </div>
-
-    <div class="movie-card">
-        <div class="movie-img">Ảnh phim</div>
-        <p>Tên Phim:</p>
-    </div>
+{% endfor %}
 
 </section>
 
