@@ -10,6 +10,8 @@ client = OpenAI(api_key=os.getenv("OPEN_API_KEY"))
 
 app = Flask(__name__)
 
+app.secret_key = "lojav"
+
 app.register_blueprint(router)
 
 init_db()

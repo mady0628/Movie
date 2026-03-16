@@ -18,6 +18,10 @@ body{
     position:absolute;
     right:30px;
     top:20px;
+
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
 
 button{
@@ -40,6 +44,12 @@ button{
     margin-top:10px;
 }
 
+.favorites{
+    background:#79d157;
+    color:white;
+    padding:8px 16px;
+    border-radius:8px;
+}
 
 /* Grid phim */
 
@@ -63,6 +73,8 @@ button{
     box-shadow:0 4px 10px rgba(0,0,0,0.1);
 
     transition:transform 0.2s;
+
+    position:relative;
 }
 
 .movie-card:hover{
@@ -94,4 +106,60 @@ button{
 a{
     text-decoration:none;
     color:inherit;
+}
+
+/* favourite button */
+
+.favorite-btn{
+    background:none;
+    border:none;
+
+    font-size:28px;
+
+    color:white;
+    text-shadow:0 0 6px rgba(0,0,0,0.8);
+
+    cursor:pointer;
+}
+
+.favorite-btn.active{
+    color:red;
+}
+
+.favorite-btn:hover{
+    transform:scale(1.2);
+}
+
+/* Back to Home */
+.back-btn{
+    margin:20px;
+    padding:10px 18px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background:#79d157;
+    color:white;
+    cursor:pointer;
+}
+
+.back-btn:hover{
+    opacity:0.8;
+}
+
+/*home button */
+.home-btn{
+    position:absolute;
+    left:30px;
+    top:25px;
+
+    padding:8px 16px;
+    border-radius:8px;
+    background:#79d157;
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.home-btn:hover{
+    opacity:0.85;
 }

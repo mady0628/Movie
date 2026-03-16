@@ -8,6 +8,9 @@
 <body>
 
 <header class="header">
+    <a href="{{ url_for('router.userindex') }}" class="home-btn">
+        Home
+    </a>
     {% block content %}
     {% endblock %}
     <form>
@@ -22,9 +25,16 @@
 {% for movie in movies %}
 
 <div class="movie-card">
-<img class="movie-img"
-src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}">
-<p class="movie-title">{{ movie.title }}</p>
+    <img class="movie-img"
+    src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}">
+    <p class="movie-title">{{ movie.title }}</p>
+    {% if show_favorite %}
+        <form action="/add_favorite" method="POST">
+            <input type="hidden" name="movie_id" value="{{ movie.id }}">
+            <button type="submit" class = "favorite-btn {% if movie.id in favorites %}active{% endif %}">♥</button>
+        </form>
+    {% endif %}
+
 </div>
 
 {% endfor %}

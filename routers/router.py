@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,request,redirect,url_for
+from flask import Blueprint, render_template,request,redirect,url_for,session
 from database import get_db
 import requests
 import os
@@ -14,7 +14,7 @@ def home():
     res = requests.get(url)
     data = res.json()
     movies = data["results"]
-    return render_template("index.html", movies=movies)
+    return render_template("index.html", movies=movies,show_favorite=False)
 
 
 @router.route("/signin")
@@ -26,13 +26,22 @@ def signin():
 def signup():
     return render_template("sign_up.html")
 
-@router.route("/user_index/<user>")
-def userindex(user):
+@router.route("/user_index")
+def userindex():
     url = f"https://api.themoviedb.org/3/movie/popular?api_key={MOVIES_API_KEY}"
     res = requests.get(url)
     data = res.json()
     movies = data["results"]
-    return render_template("user_index.html", username=user, movies=movies)
+
+    userID = session["user_id"]
+    username = session["username"]
+    conn = get_db()
+    cursor = conn.cursor()
+    favo = cursor.execute("SELECT movie_id FROM favorites WHERE user_id=?",(userID,)).fetchall()
+    favorites = [int(f["movie_id"]) for f in favo]
+    conn.close()
+
+    return render_template("user_index.html", username=username, movies=movies, show_favorite=True, favorites=favorites )
 
 @router.route("/user", methods = ['POST'])
 def user():
@@ -41,8 +50,11 @@ def user():
     conn = get_db()
     cursor = conn.cursor()
     user = cursor.execute("SELECT * FROM users WHERE email=? AND password=?",(email,password)).fetchone()
+    conn.close()
     if user:
-        return redirect(url_for('router.userindex', user=user["username"]))
+        session["user_id"] = user["id"]
+        session["username"] = user["username"]
+        return redirect(url_for('router.userindex'))
     else:
         return redirect(url_for('router.signin'))
 
@@ -63,3 +75,49 @@ def adduser():
         conn.commit()
         conn.close()
         return redirect(url_for('router.signin'))
+    
+@router.route("/add_favorite", methods = ['POST'])
+def addfavorite():
+    movieID = int(request.form.get('movie_id'))
+    conn = get_db()
+    cursor = conn.cursor()
+    userID = session["user_id"]
+    exist = cursor.execute(
+        "SELECT 1 FROM favorites WHERE user_id=? AND movie_id=?",
+        (userID, movieID)
+    ).fetchone()
+
+    if not exist:
+        cursor.execute(
+            "INSERT INTO favorites(user_id,movie_id) VALUES (?,?)",
+            (userID, movieID)
+        )
+        conn.commit()
+    else:
+        cursor.execute(
+            "DELETE FROM favorites WHERE user_id=? AND movie_id=?",
+            (userID,movieID)
+        )
+        conn.commit()
+    conn.close()
+    return redirect(request.referrer)
+
+@router.route('/favorites')
+def favorite():
+    userID = session["user_id"]
+    username = session["username"]
+    conn = get_db()
+    cursor = conn.cursor()
+    favo = cursor.execute("SELECT movie_id FROM favorites WHERE user_id=?",(userID,)).fetchall()
+    favorites = [int(f["movie_id"]) for f in favo]
+    conn.close()
+    
+    movie = []
+
+    for i in favorites:
+        url = f"https://api.themoviedb.org/3/movie/{i}?api_key={MOVIES_API_KEY}"
+        res = requests.get(url)
+        data = res.json()
+        movie.append(data)
+    
+    return render_template("favorites.html", username=username, movies = movie, favorites=favorites, show_favorite=True)
