@@ -41,7 +41,7 @@ def userindex():
     favorites = [int(f["movie_id"]) for f in favo]
     conn.close()
 
-    return render_template("user_index.html", username=username, movies=movies, show_favorite=True, favorites=favorites )
+    return render_template("user_index.html", username=username, movies=movies, show_favorite=True, favorites=favorites,show_home = False )
 
 @router.route("/user", methods = ['POST'])
 def user():
@@ -120,4 +120,4 @@ def favorite():
         data = res.json()
         movie.append(data)
     
-    return render_template("favorites.html", username=username, movies = movie, favorites=favorites, show_favorite=True)
+    return render_template("favorites.html", username=username, movies = movie, favorites=favorites, show_favorite=True, show_home=True)

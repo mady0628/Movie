@@ -8,9 +8,11 @@
 <body>
 
 <header class="header">
-    <a href="{{ url_for('router.userindex') }}" class="home-btn">
-        Home
-    </a>
+    {% if show_home %}
+        <a href="{{ url_for('router.userindex') }}" class="home-btn">
+            Home
+        </a>
+    {% endif %}
     {% block content %}
     {% endblock %}
     <form>
