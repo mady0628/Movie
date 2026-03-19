@@ -13,29 +13,60 @@
             Home
         </a>
     {% endif %}
+
     {% block content %}
     {% endblock %}
-    <form>
+
+    <form action="/ai_recommend">
         <input class="search" type="text" name="user_request" placeholder="Request" required>
         <button type="submit">Ask</button>
     </form>
 </header>
-
 
 <section class="movie-container">
 
 {% for movie in movies %}
 
 <div class="movie-card">
+
     <img class="movie-img"
     src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}">
-    <p class="movie-title">{{ movie.title }}</p>
-    {% if show_favorite %}
-        <form action="/add_favorite" method="POST">
-            <input type="hidden" name="movie_id" value="{{ movie.id }}">
-            <button type="submit" class = "favorite-btn {% if movie.id in favorites %}active{% endif %}">♥</button>
-        </form>
-    {% endif %}
+
+    <div class="movie-hover">
+
+        <img class="bg-img"
+        src="https://image.tmdb.org/t/p/w780{{ movie.backdrop_path }}">
+
+        <div class="movie-info">
+
+            <h3>{{ movie.title }}</h3>
+
+            <div class="actions">
+                <a href="https://www.netflix.com/search?q={{ movie.title }}" target="_blank">
+                    <button >▶ Xem ngay</button>
+                </a>
+
+                <button>Chi tiết</button>
+
+                {% if show_favorite %}
+                <form action="/add_favorite" method="POST">
+                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                    <button type="submit" class = "favorite-btn {% if movie.id in favorites %}active{% endif %}">♥</button>
+                </form>
+                {% endif %}
+
+            </div>
+
+            <p class="meta">
+                ⭐ {{ movie.vote_average }}
+            </p>
+
+            <p class="overview">
+                {{ movie.overview[:100] }}...
+            </p>
+
+        </div>
+    </div>
 
 </div>
 
