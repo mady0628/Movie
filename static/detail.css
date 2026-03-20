@@ -1,0 +1,159 @@
+body{
+    margin:0;
+    font-family: Arial;
+    background:#111; /* nền dưới */
+    color:white;
+}
+
+/* HERO BACKDROP */
+
+.backdrop{
+    width:100%;
+    height:400px;
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    position:relative;
+}
+
+/* overlay chỉ trong backdrop */
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(to bottom, rgba(0,0,0,0.2), #111 90%),
+        linear-gradient(to right, rgba(0,0,0,0.8), transparent);
+}
+
+/* HOME */
+
+.home-btn{
+    position:absolute;
+    top:20px;
+    left:30px;
+
+    padding:10px 16px;
+    border-radius:8px;
+    border: 2px solid white;
+    background:#2a2a2a;
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* MAIN CARD */
+
+.main-card{
+    width:75%;
+    margin:-20px auto 50px; /* đè lên backdrop */
+
+    display:flex;
+    gap:50px;
+
+    padding:40px;
+
+    background:#1a1a1a;
+    border-radius:20px;
+
+    box-shadow:0 25px 70px rgba(0,0,0,0.8);
+}
+
+/* POSTER */
+
+.poster{
+    width:260px;
+    border-radius:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.8);
+}
+
+/* RIGHT */
+
+.right{
+    max-width:650px;
+}
+
+.right h1{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+/* META */
+
+.meta{
+    font-size:16px;
+    color:#ccc;
+    margin-bottom:12px;
+}
+
+/* GENRES */
+
+.genres{
+    margin-bottom:15px;
+}
+
+.genres span{
+    display:inline-block;
+    background:#333;
+    padding:6px 12px;
+    border-radius:6px;
+    margin-right:6px;
+    font-size:13px;
+}
+
+/* ACTIONS */
+
+.actions{
+    margin:25px 0;
+    display:flex;
+    gap:15px;
+}
+
+/* WATCH */
+
+.watch{
+    background:#ffd369;
+    color:black;
+
+    padding:14px 26px;
+    border:none;
+    border-radius:30px;
+
+    font-weight:bold;
+    cursor:pointer;
+
+    box-shadow:0 5px 20px rgba(255,211,105,0.4);
+}
+
+.watch:hover{
+    transform:scale(1.05);
+}
+
+/* FAVORITE */
+
+.fav{
+    background:#2a2a2a;
+    color:white;
+
+    padding:14px 26px;
+    border:none;
+    border-radius:30px;
+
+    cursor:pointer;
+}
+
+.fav:hover{
+    background:#444;
+}
+
+/* OVERVIEW */
+
+.overview{
+    margin-top:20px;
+    line-height:1.7;
+    color:#ddd;
+    font-size:15px;
+}

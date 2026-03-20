@@ -42,11 +42,13 @@
             <h3>{{ movie.title }}</h3>
 
             <div class="actions">
-                <a href="https://www.netflix.com/search?q={{ movie.title }}" target="_blank">
+                <a href="https://wmovies.one/?s={{ movie.title }}" target="_blank">
                     <button >▶ Xem ngay</button>
                 </a>
 
-                <button>Chi tiết</button>
+                <a href="{{url_for('router.movie_detail', id=movie.id)}}">
+                    <button>Chi Tiết</button>
+                </a>
 
                 {% if show_favorite %}
                 <form action="/add_favorite" method="POST">

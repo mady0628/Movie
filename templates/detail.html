@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ movie.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='detail.css') }}">
+</head>
+<body>
+
+<!-- HERO BACKDROP -->
+<div class="backdrop"
+style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdrop_path if movie.backdrop_path else movie.poster_path }}');">
+    
+    <div class="overlay"></div>
+
+    <!-- HOME -->
+    {% if logged %}
+        <a href="{{ url_for('router.userindex') }}" class="home-btn">← Home</a>
+    {% else %}
+        <a href="{{ url_for('router.home') }}" class="home-btn">← Home</a>
+    {% endif %}
+
+</div>
+
+<!-- MAIN CARD -->
+<div class="main-card">
+
+    <div class="left">
+        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" class="poster">
+    </div>
+
+    <div class="right">
+
+        <h1>{{ movie.title }}</h1>
+
+        <div class="meta">
+            ⭐ {{ movie.vote_average }}
+            {% if movie.release_date %}
+                <span>{{ movie.release_date[:4] }}</span>
+            {% endif %}
+        </div>
+
+        <div class="genres">
+            {% for g in movie.genres %}
+                <span>{{ g.name }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="actions">
+            <a href="https://www.netflix.com/search?q={{ movie.title }}" target="_blank">
+                <button class="watch">▶ Xem ngay</button>
+            </a>
+
+            <form action="/add_favorite" method="POST">
+                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                <button class="fav">♥ Yêu thích</button>
+            </form>
+        </div>
+
+        <p class="overview">
+            {{ movie.overview }}
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
