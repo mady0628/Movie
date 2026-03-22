@@ -36,7 +36,7 @@ a{
 }
 
 .signup{
-    background:#79d157;
+    background: #222;
     color:white;
 }
 
@@ -49,10 +49,19 @@ a{
 }
 
 .favorites{
-    background:#79d157;
+    background:#222;
     color:white;
     padding:8px 16px;
     border-radius:8px;
+    border: 2px solid white;
+}
+
+.logout{
+    background: #222;
+    color: white;
+    padding: 8px 16px;
+    border-radius:8px;
+    border: 2px solid white;
 }
 
 /* Grid phim */
@@ -224,3 +233,5 @@ a{
 .home-btn:hover{
     opacity:0.85;
 }
+
+

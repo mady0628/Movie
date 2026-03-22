@@ -30,18 +30,15 @@ def init_db():
     )
     """)
 
-    conn.commit()
-    conn.close()
-
-
-def create_user(username,password):
-    conn = get_db()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "INSERT INTO users(username,password) VALUES (?,?)",
-        (username,password)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS comments(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        movie_id INTEGER,
+        user_name TEXT,
+        anonymous INTEGER,
+        contents TEXT NOT NULL
     )
+    """)
 
     conn.commit()
     conn.close()

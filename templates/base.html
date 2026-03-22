@@ -50,7 +50,7 @@
                     <button>Chi Tiết</button>
                 </a>
 
-                {% if show_favorite %}
+                {% if logged %}
                 <form action="/add_favorite" method="POST">
                     <input type="hidden" name="movie_id" value="{{ movie.id }}">
                     <button type="submit" class = "favorite-btn {% if movie.id in favorites %}active{% endif %}">♥</button>

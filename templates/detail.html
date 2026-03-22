@@ -34,7 +34,7 @@ style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdr
         <h1>{{ movie.title }}</h1>
 
         <div class="meta">
-            ⭐ {{ movie.vote_average }}
+            ⭐ {{ "{:.1f}".format(movie.vote_average) }}
             {% if movie.release_date %}
                 <span>{{ movie.release_date[:4] }}</span>
             {% endif %}
@@ -47,14 +47,16 @@ style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdr
         </div>
 
         <div class="actions">
-            <a href="https://www.netflix.com/search?q={{ movie.title }}" target="_blank">
+            <a href="https://wmovies.one/?s={{ movie.title }}" target="_blank">
                 <button class="watch">▶ Xem ngay</button>
             </a>
-
-            <form action="/add_favorite" method="POST">
-                <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                <button class="fav">♥ Yêu thích</button>
-            </form>
+            {% if logged %}
+                <form action="/add_favorite" method="POST">
+                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                    <button type="submit" class= "fav {% if movie.id in favorites %}active{% endif %}">♥ Yêu thích</button>
+                </form>
+            {% endif %}
+            
         </div>
 
         <p class="overview">
@@ -62,6 +64,65 @@ style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdr
         </p>
 
     </div>
+
+</div>
+
+<div class="comment-section">
+
+    <!-- HEADER -->
+    <div class="comment-header">
+        <h3>💬 Bình luận ({{comment|length}})</h3>
+    </div>
+
+    {% if not logged %}
+        <p class="login-warning">
+            Vui lòng <a href="{{ url_for('router.signin') }}">đăng nhập</a> để tham gia bình luận.
+        </p>
+    {% else %}
+        <!-- INPUT -->
+        <form action="{{ url_for('router.comment') }}" method="POST">
+            <div class="comment-box">
+                <textarea placeholder="Viết bình luận" name="content"></textarea>
+
+                <div class="comment-actions">
+                    <label class="spoiler">
+                        <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                        <input type="checkbox" name="anonymous"> Ẩn Danh
+                    </label>
+
+                    <button type="submit" class="send-btn">Gửi ➤</button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+
+    <!-- COMMENTS LIST -->
+    {% if comment|length ==0 %}
+        <div class="comments">
+            <div class="icon">💬</div>
+            <p>Chưa có bình luận nào</p>
+        </div>
+    {% else %}
+        <div class="comments-list">
+            {% for c in comment %}
+                <div class="comment-item">
+                    
+                    <div class="comment-user">
+                        {% if c['anonymous'] == 1 %}
+                            Ẩn danh
+                        {% else %}
+                            {{ c['user_name'] }}
+                        {% endif %}
+                    </div>
+
+                    <div class="comment-content">
+                        {{ c['contents'] }}
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 </div>
 

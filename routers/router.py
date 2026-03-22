@@ -14,7 +14,8 @@ def home():
     res = requests.get(url)
     data = res.json()
     movies = data["results"]
-    return render_template("index.html", movies=movies,show_favorite=False)
+    logged = "user_id" in session
+    return render_template("index.html", movies=movies,logged=logged)
 
 
 @router.route("/signin")
@@ -25,6 +26,11 @@ def signin():
 @router.route("/signup")
 def signup():
     return render_template("sign_up.html")
+
+@router.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("router.home"))
 
 @router.route("/user_index")
 def userindex():
@@ -41,7 +47,9 @@ def userindex():
     favorites = [int(f["movie_id"]) for f in favo]
     conn.close()
 
-    return render_template("user_index.html", username=username, movies=movies, show_favorite=True, favorites=favorites,show_home = False)
+    logged = "user_id" in session
+
+    return render_template("user_index.html", username=username, movies=movies, logged=logged, favorites=favorites,show_home = False)
 
 @router.route("/user", methods = ['POST'])
 def user():
@@ -63,7 +71,6 @@ def adduser():
     username = request.form.get('username')
     email = request.form.get('email')
     password = request.form.get('password')
-    print(username, email, password)
     conn = get_db()
     cursor = conn.cursor()
     ans = cursor.execute("SELECT * FROM users WHERE email=? AND password=?",(email,password)).fetchall()
@@ -111,16 +118,15 @@ def favorite():
     favo = cursor.execute("SELECT movie_id FROM favorites WHERE user_id=?",(userID,)).fetchall()
     favorites = [int(f["movie_id"]) for f in favo]
     conn.close()
-    
+    logged = "user_id" in session
     movie = []
-
     for i in favorites:
         url = f"https://api.themoviedb.org/3/movie/{i}?api_key={MOVIES_API_KEY}"
         res = requests.get(url)
         data = res.json()
         movie.append(data)
     
-    return render_template("favorites.html", username=username, movies = movie, favorites=favorites, show_favorite=True, show_home=True)
+    return render_template("favorites.html", username=username, movies = movie, favorites=favorites, logged=logged, show_home=True)
 
 @router.route('/detail/<int:id>')
 def movie_detail(id):
@@ -128,4 +134,35 @@ def movie_detail(id):
     res = requests.get(url)
     movie = res.json()
     logged = "user_id" in session
-    return render_template("detail.html",movie=movie,logged=logged)
+    favorites = []
+    comment = []
+    conn = get_db()
+    cursor = conn.cursor()
+    if logged:
+        userID = session["user_id"]
+        
+        favo = cursor.execute("SELECT movie_id FROM favorites WHERE user_id=?",(userID,)).fetchall()
+        favorites = [int(f["movie_id"]) for f in favo]
+    comment = cursor.execute("SELECT * from comments WHERE movie_id=?",(id,)).fetchall()
+    conn.close()
+    return render_template("detail.html",movie=movie,logged=logged,favorites=favorites,comment=comment)
+
+@router.route('/comment', methods = ['POST'])
+def comment():
+    content = request.form.get('content')
+    anonymous = request.form.get('anonymous')
+    movieID = request.form.get('movie_id')
+    userName = session['username']
+    if anonymous:
+        anonymous = 1
+    else:
+        anonymous = 0
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO comments(movie_id,user_name,anonymous,contents) VALUES(?,?,?,?)",
+        (movieID,userName,anonymous,content)
+    )
+    conn.commit()
+    conn.close()
+    return redirect(request.referrer)
