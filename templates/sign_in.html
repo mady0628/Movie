@@ -21,7 +21,15 @@
 
         <button type="submit">Sign In</button>
     </form>
-
+    {% with messages=get_flashed_messages(with_categories = true)%}
+        {% if messages %}
+            {% for category,message in messages  %}
+                <div class="alert alert-{{ category }}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <p>Chưa có tài khoản? <a href="{{ url_for('router.signup')}}">Sign Up</a></p>
 </div>
 

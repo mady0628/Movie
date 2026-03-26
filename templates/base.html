@@ -76,5 +76,40 @@
 
 </section>
 
+<div class="pagination">
+
+    <!-- FIRST -->
+    {% if page > 1 %}
+        <a href="{{ url_for('router.home', page=1) }}">&laquo;</a>
+    {% else %}
+        <span class="disabled">&laquo;</span>
+    {% endif %}
+
+    <!-- PREV -->
+    {% if page > 1 %}
+        <a href="{{ url_for('router.home', page=page-1) }}">&lsaquo;</a>
+    {% else %}
+        <span class="disabled">&lsaquo;</span>
+    {% endif %}
+
+    <!-- CURRENT -->
+    <span class="current">{{ page }}</span>
+
+    <!-- NEXT -->
+    {% if page < total_pages %}
+        <a href="{{ url_for('router.home', page=page+1) }}">&rsaquo;</a>
+    {% else %}
+        <span class="disabled">&rsaquo;</span>
+    {% endif %}
+
+    <!-- LAST -->
+    {% if page < total_pages %}
+        <a href="{{ url_for('router.home', page=total_pages) }}">&raquo;</a>
+    {% else %}
+        <span class="disabled">&raquo;</span>
+    {% endif %}
+
+</div>
+
 </body>
 </html>

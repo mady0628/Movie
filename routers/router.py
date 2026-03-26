@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,request,redirect,url_for,session
+from flask import Blueprint, render_template,request,redirect,url_for,session,flash
 from database import get_db
 import requests
 import os
@@ -10,12 +10,14 @@ router = Blueprint("router", __name__)
 
 @router.route("/")
 def home():
-    url = f"https://api.themoviedb.org/3/movie/popular?api_key={MOVIES_API_KEY}"
+    page = request.args.get("page",1,type=int)
+
+    url = f"https://api.themoviedb.org/3/movie/popular?api_key={MOVIES_API_KEY}&page={page}"
     res = requests.get(url)
     data = res.json()
     movies = data["results"]
     logged = "user_id" in session
-    return render_template("index.html", movies=movies,logged=logged)
+    return render_template("index.html", movies=movies, logged=logged, page=page, total_pages=50)
 
 
 @router.route("/signin")
@@ -34,7 +36,8 @@ def logout():
 
 @router.route("/user_index")
 def userindex():
-    url = f"https://api.themoviedb.org/3/movie/popular?api_key={MOVIES_API_KEY}"
+    page = request.args.get("page",1,type=int)
+    url = f"https://api.themoviedb.org/3/movie/popular?api_key={MOVIES_API_KEY}&page={page}"
     res = requests.get(url)
     data = res.json()
     movies = data["results"]
@@ -49,7 +52,7 @@ def userindex():
 
     logged = "user_id" in session
 
-    return render_template("user_index.html", username=username, movies=movies, logged=logged, favorites=favorites,show_home = False)
+    return render_template("user_index.html", username=username, movies=movies, logged=logged, favorites=favorites,show_home = False, page=page, total_pages=50)
 
 @router.route("/user", methods = ['POST'])
 def user():
@@ -64,6 +67,7 @@ def user():
         session["username"] = user["username"]
         return redirect(url_for('router.userindex'))
     else:
+        flash('Sai tài khoản hoặc mật khẩu. Vui lòng thử lại','error')
         return redirect(url_for('router.signin'))
 
 @router.route("/add_user", methods = ["POST"])
@@ -76,6 +80,7 @@ def adduser():
     ans = cursor.execute("SELECT * FROM users WHERE email=?",(email,)).fetchall()
     if len(ans) >0:
         conn.close()
+        flash('Email đã tồn tại vui lòng thử email khác','error')
         return redirect(url_for('router.signup'))
     else:
         cursor.execute("INSERT INTO users(username,email,password)values(?,?,?)",(username,email,password))

@@ -235,3 +235,38 @@ a{
 }
 
 
+.pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    margin:40px 0;
+}
+
+.pagination a,
+.pagination span{
+    padding:8px 14px;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+.pagination a{
+    background:#222;
+    color:white;
+    text-decoration:none;
+}
+
+.pagination a:hover{
+    background:#79d157;
+}
+
+.pagination .current{
+    background:#79d157;
+    color:white;
+}
+
+.pagination .disabled{
+    background:#333;
+    color:#888;
+    cursor:not-allowed;
+}
