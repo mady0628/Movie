@@ -8,6 +8,35 @@ body{
     font-family:Arial;
 }
 
+.header{
+    width: 100%;
+    padding: 20px 30px;
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* đẩy Home sang trái */
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.home-btn{
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.home-btn:hover{
+    opacity: 0.85;
+}
+
+
 .auth-container{
     background:white;
     padding:40px;
@@ -32,14 +61,15 @@ body{
 .auth-container button{
     width:100%;
     padding:10px;
-    background:#7ed957;
+    background:#222;
     border:none;
     border-radius:6px;
     font-size:16px;
     cursor:pointer;
+    color: white;
 }
 
 .auth-container a{
     text-decoration:none;
-    color:#4caf50;
+    color: darkblue;
 }

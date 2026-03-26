@@ -73,7 +73,7 @@ def adduser():
     password = request.form.get('password')
     conn = get_db()
     cursor = conn.cursor()
-    ans = cursor.execute("SELECT * FROM users WHERE email=? AND password=?",(email,password)).fetchall()
+    ans = cursor.execute("SELECT * FROM users WHERE email=?",(email,)).fetchall()
     if len(ans) >0:
         conn.close()
         return redirect(url_for('router.signup'))
@@ -165,4 +165,4 @@ def comment():
     )
     conn.commit()
     conn.close()
-    return redirect(request.referrer)
+    return redirect(url_for('router.movie_detail',id=movieID))
