@@ -8,8 +8,12 @@
 <body>
 
 <header class="header">
-    {% if show_home %}
+    {% if logged %}
         <a href="{{ url_for('movie.userindex') }}" class="home-btn">
+            Home
+        </a>
+    {% else %}
+        <a href="{{ url_for('movie.home') }}" class="home-btn">
             Home
         </a>
     {% endif %}
@@ -52,6 +56,7 @@
 
                 {% if logged %}
                 <form action="/add_favorite" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="movie_id" value="{{ movie.id }}">
                     <button type="submit" class = "favorite-btn {% if movie.id in favorites %}active{% endif %}">♥</button>
                 </form>
@@ -75,41 +80,42 @@
 {% endfor %}
 
 </section>
+{% if showPage %}
+    <div class="pagination">
 
-<div class="pagination">
+        <!-- FIRST -->
+        {% if page > 1 %}
+            <a href="{{ url_for(request.endpoint, page=1) }}">&laquo;</a>
+        {% else %}
+            <span class="disabled">&laquo;</span>
+        {% endif %}
 
-    <!-- FIRST -->
-    {% if page > 1 %}
-        <a href="{{ url_for(request.endpoint, page=1) }}">&laquo;</a>
-    {% else %}
-        <span class="disabled">&laquo;</span>
-    {% endif %}
+        <!-- PREV -->
+        {% if page > 1 %}
+            <a href="{{ url_for(request.endpoint, page=page-1) }}">&lsaquo;</a>
+        {% else %}
+            <span class="disabled">&lsaquo;</span>
+        {% endif %}
 
-    <!-- PREV -->
-    {% if page > 1 %}
-        <a href="{{ url_for(request.endpoint, page=page-1) }}">&lsaquo;</a>
-    {% else %}
-        <span class="disabled">&lsaquo;</span>
-    {% endif %}
+        <!-- CURRENT -->
+        <span class="current">{{ page }}</span>
 
-    <!-- CURRENT -->
-    <span class="current">{{ page }}</span>
+        <!-- NEXT -->
+        {% if page < total_pages %}
+            <a href="{{ url_for(request.endpoint, page=page+1) }}">&rsaquo;</a>
+        {% else %}
+            <span class="disabled">&rsaquo;</span>
+        {% endif %}
 
-    <!-- NEXT -->
-    {% if page < total_pages %}
-        <a href="{{ url_for(request.endpoint, page=page+1) }}">&rsaquo;</a>
-    {% else %}
-        <span class="disabled">&rsaquo;</span>
-    {% endif %}
+        <!-- LAST -->
+        {% if page < total_pages %}
+            <a href="{{ url_for(request.endpoint, page=total_pages) }}">&raquo;</a>
+        {% else %}
+            <span class="disabled">&raquo;</span>
+        {% endif %}
 
-    <!-- LAST -->
-    {% if page < total_pages %}
-        <a href="{{ url_for(request.endpoint, page=total_pages) }}">&raquo;</a>
-    {% else %}
-        <span class="disabled">&raquo;</span>
-    {% endif %}
-
-</div>
+    </div>
+{% endif %}
 
 </body>
 </html>

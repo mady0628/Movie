@@ -18,6 +18,7 @@ def home():
         logged=logged,
         page=page,
         total_pages=total_pages,
+        showPage = True,
     )
 
 
@@ -43,8 +44,8 @@ def userindex():
         movies=movies,
         logged=True,
         favorites=favorites,
-        show_home=False,
         page=page,
+        showPage = True,
         total_pages=total_pages,
     )
 
@@ -101,8 +102,8 @@ def favorite():
         username=username,
         movies=movies,
         favorites=favorites,
+        showPage = False,
         logged=True,
-        show_home=True,
     )
 
 
@@ -141,7 +142,7 @@ def movie_detail(id):
 def search():
     q = request.args.get("q","").strip()
     page = request.args.get("page",1,type=int)
-    logged = "used_id" in session
+    logged = "user_id" in session
 
     movies, total_pages = ([],1) if not q else search_movies(q,page)
     favorites = []
@@ -160,7 +161,7 @@ def search():
         favorites=favorites,
         page=page,
         total_pages=total_pages,
-        show_home=logged,
+        showPage = False,
         query=q,
     )
  
@@ -171,6 +172,6 @@ def search():
         favorites=favorites,
         page=page,
         total_pages=total_pages,
-        show_home=logged,
+        showPage=False,
         query=q,
     )
