@@ -82,6 +82,7 @@ style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdr
     {% else %}
         <!-- INPUT -->
         <form action="{{ url_for('comment.add_comment') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="comment-box">
                 <textarea placeholder="Viết bình luận" name="content"></textarea>
 
