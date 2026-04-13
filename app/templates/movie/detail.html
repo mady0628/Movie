@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ movie.title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/detail.css') }}">
 </head>
 <body>
 
@@ -15,9 +15,9 @@ style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdr
 
     <!-- HOME -->
     {% if logged %}
-        <a href="{{ url_for('router.userindex') }}" class="home-btn">← Home</a>
+        <a href="{{ url_for('movie.userindex') }}" class="home-btn">← Home</a>
     {% else %}
-        <a href="{{ url_for('router.home') }}" class="home-btn">← Home</a>
+        <a href="{{ url_for('movie.home') }}" class="home-btn">← Home</a>
     {% endif %}
 
 </div>
@@ -52,6 +52,7 @@ style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdr
             </a>
             {% if logged %}
                 <form action="/add_favorite" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="movie_id" value="{{ movie.id }}">
                     <button type="submit" class= "fav {% if movie.id in favorites %}active{% endif %}">♥ Yêu thích</button>
                 </form>
@@ -76,11 +77,11 @@ style="background-image: url('https://image.tmdb.org/t/p/original{{ movie.backdr
 
     {% if not logged %}
         <p class="login-warning">
-            Vui lòng <a href="{{ url_for('router.signin') }}">đăng nhập</a> để tham gia bình luận.
+            Vui lòng <a href="{{ url_for('auth.signin') }}">đăng nhập</a> để tham gia bình luận.
         </p>
     {% else %}
         <!-- INPUT -->
-        <form action="{{ url_for('router.comment') }}" method="POST">
+        <form action="{{ url_for('comment.add_comment') }}" method="POST">
             <div class="comment-box">
                 <textarea placeholder="Viết bình luận" name="content"></textarea>
 

@@ -2,13 +2,13 @@
 {% block content %}
 <div class="auth">
 
-    <a href="{{ url_for('router.favorite') }}" class="favorites">
+    <a href="{{ url_for('movie.favorite') }}" class="favorites">
         Favorites
     </a>
 
     <p><strong>Welcome, </strong>{{ username }}</p>
 
-    <a href="{{ url_for('router.logout') }}" class="logout">Logout</a>
+    <a href="{{ url_for('auth.logout') }}" class="logout">Logout</a>
 </div>
 
 {% endblock %}

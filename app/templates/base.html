@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang phim</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
 <header class="header">
     {% if show_home %}
-        <a href="{{ url_for('router.userindex') }}" class="home-btn">
+        <a href="{{ url_for('movie.userindex') }}" class="home-btn">
             Home
         </a>
     {% endif %}
@@ -17,9 +17,9 @@
     {% block content %}
     {% endblock %}
 
-    <form action="/ai_recommend">
-        <input class="search" type="text" name="user_request" placeholder="Request" required>
-        <button type="submit">Ask</button>
+    <form action="{{ url_for('movie.search') }}" method= "get">
+        <input class="search" type="text" name="q" placeholder="Search movie name" required value="{{ query or '' }}">
+        <button type="submit">Search</button>
     </form>
 </header>
 
@@ -46,7 +46,7 @@
                     <button >▶ Xem ngay</button>
                 </a>
 
-                <a href="{{url_for('router.movie_detail', id=movie.id)}}">
+                <a href="{{url_for('movie.movie_detail', id=movie.id)}}">
                     <button>Chi Tiết</button>
                 </a>
 
@@ -80,14 +80,14 @@
 
     <!-- FIRST -->
     {% if page > 1 %}
-        <a href="{{ url_for('router.home', page=1) }}">&laquo;</a>
+        <a href="{{ url_for(request.endpoint, page=1) }}">&laquo;</a>
     {% else %}
         <span class="disabled">&laquo;</span>
     {% endif %}
 
     <!-- PREV -->
     {% if page > 1 %}
-        <a href="{{ url_for('router.home', page=page-1) }}">&lsaquo;</a>
+        <a href="{{ url_for(request.endpoint, page=page-1) }}">&lsaquo;</a>
     {% else %}
         <span class="disabled">&lsaquo;</span>
     {% endif %}
@@ -97,14 +97,14 @@
 
     <!-- NEXT -->
     {% if page < total_pages %}
-        <a href="{{ url_for('router.home', page=page+1) }}">&rsaquo;</a>
+        <a href="{{ url_for(request.endpoint, page=page+1) }}">&rsaquo;</a>
     {% else %}
         <span class="disabled">&rsaquo;</span>
     {% endif %}
 
     <!-- LAST -->
     {% if page < total_pages %}
-        <a href="{{ url_for('router.home', page=total_pages) }}">&raquo;</a>
+        <a href="{{ url_for(request.endpoint, page=total_pages) }}">&raquo;</a>
     {% else %}
         <span class="disabled">&raquo;</span>
     {% endif %}

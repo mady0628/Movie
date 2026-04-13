@@ -3,20 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Sign Up</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='sign.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sign.css') }}">
 </head>
 
+<body class="auth-body">
+
 <header class="header">
-    <a href="{{ url_for('router.home') }}" class="home-btn">
+    <a href="{{ url_for('movie.home') }}" class="home-btn">
             Home
     </a>
 </header>
 
-<body class="auth-body">
-
 <div class="auth-container">
     <h2>Sign Up</h2>
     <form method = 'post' action = '/add_user'>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="text" name="username" placeholder="Username" required>
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name = "password" placeholder="Password" required>
@@ -33,7 +34,7 @@
     {% endwith %}
     <p>
         Đã có tài khoản?
-        <a class="signin-link" href="{{ url_for('router.signin') }}">Sign In</a>
+        <a class="signin-link" href="{{ url_for('auth.signin') }}">Sign In</a>
     </p>
 </div>
 
