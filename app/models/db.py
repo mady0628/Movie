@@ -8,8 +8,8 @@ def get_db():
         g.db = psycopg.connect(
             current_app.config["DATABASE_URL"],
             connect_timeout=10,
+            row_factory = dict_row
         )
-        g.db.row_factory = dict_row
     return g.db
 
 

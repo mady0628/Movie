@@ -9,7 +9,7 @@ movie_bp = Blueprint("movie", __name__)
 @movie_bp.route("/")
 def home():
     page = request.args.get("page", 1, type=int)
-    movies, total_pages = get_popular_movies(page)
+    movies = get_popular_movies(page)
     logged = "user_id" in session
 
     return render_template(
@@ -17,7 +17,7 @@ def home():
         movies=movies,
         logged=logged,
         page=page,
-        total_pages=total_pages,
+        total_pages=50,
         showPage = True,
     )
 
@@ -26,7 +26,7 @@ def home():
 @login_required
 def userindex():
     page = request.args.get("page", 1, type=int)
-    movies, total_pages = get_popular_movies(page)
+    movies = get_popular_movies(page)
 
     user_id = session["user_id"]
     username = session["username"]
@@ -46,7 +46,7 @@ def userindex():
         favorites=favorites,
         page=page,
         showPage = True,
-        total_pages=total_pages,
+        total_pages=50,
     )
 
 
@@ -163,6 +163,7 @@ def search():
         total_pages=total_pages,
         showPage = False,
         query=q,
+        username = session["username"]
     )
  
     return render_template(

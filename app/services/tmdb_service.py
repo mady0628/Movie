@@ -11,9 +11,9 @@ def get_popular_movies(page=1):
         res = requests.get(url, timeout=10)
         res.raise_for_status()
         data = res.json()
-        return data.get("results", []), data.get("total_pages", 1)
+        return data.get("results", [])
     except requests.RequestException:
-        return [], 1
+        return []
 
 
 def get_movie_detail(movie_id):
