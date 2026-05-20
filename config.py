@@ -8,7 +8,7 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
     MOVIES_API_KEY = os.getenv("MOVIES_API_KEY")
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    DATABASE_URL = (
+    DATABASE_URL = os.getenv("DATABASE_URL") or (
         f"dbname={os.getenv('DB_NAME')} "
         f"user={os.getenv('DB_USER')} "
         f"password={os.getenv('DB_PASSWORD')} "
